@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.88,
-      "y": 7.09
+      "x": 0.7792735585471178,
+      "y": 6.670053340106681
     },
-    "rotation": 0
+    "rotation": -120.96375653207349
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "inicio izquierda"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "recojer una nota iz"
+            "pathName": "Recto"
           }
         },
         {
@@ -30,15 +24,27 @@
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 1.0
+            "pathName": "Recoger segunda nota centro"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Recojer 2 nota"
+            "pathName": "tirar segunda nota centro"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Recoger tercera nota centro"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Tirar tercera nota centro"
           }
         }
       ]
