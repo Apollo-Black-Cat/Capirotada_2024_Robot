@@ -5,38 +5,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 
-public class ShooterCommand extends Command {
-  private final ShooterSubsystem shooterSubsystem;
-  private boolean isShooting;
-
-  /** Creates a new ShooterCommand. */
-  public ShooterCommand(ShooterSubsystem shooterSubsystem, boolean isShooting) {
+public class OffSolenoid extends Command {
+  ClimberSubsystem climberSubsystem;
+  /** Creates a new OffSolenoid. */
+  public OffSolenoid(ClimberSubsystem climberSubsystem) {
+    this.climberSubsystem = climberSubsystem;
+    addRequirements(climberSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooterSubsystem = shooterSubsystem;
-    addRequirements(shooterSubsystem);
-    this.isShooting = isShooting;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    System.out.println("Shooter iniciado!");
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.shooterSubsystem.ActivateShooter(isShooting);
+    climberSubsystem.setClimber(false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    this.shooterSubsystem.stopMotors();
-    System.out.println("Sistema de shooter terminado");
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

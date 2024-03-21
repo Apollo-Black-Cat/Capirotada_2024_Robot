@@ -5,37 +5,36 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ConveyorSubsystem;
 
-public class ShooterCommand extends Command {
-  private final ShooterSubsystem shooterSubsystem;
+public class ConveyorCommand extends Command {
+  private final ConveyorSubsystem conveyorSubsystem;
   private boolean isShooting;
-
-  /** Creates a new ShooterCommand. */
-  public ShooterCommand(ShooterSubsystem shooterSubsystem, boolean isShooting) {
+  /** Creates a new ConveyorCommand. */
+  public ConveyorCommand(ConveyorSubsystem conveyorSubsystem, boolean isShooting) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooterSubsystem = shooterSubsystem;
-    addRequirements(shooterSubsystem);
+    this.conveyorSubsystem = conveyorSubsystem;
+    addRequirements(conveyorSubsystem);
     this.isShooting = isShooting;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Shooter iniciado!");
+    System.out.println("Conveyor iniciado!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.shooterSubsystem.ActivateShooter(isShooting);
+    this.conveyorSubsystem.setPosition(isShooting);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.shooterSubsystem.stopMotors();
-    System.out.println("Sistema de shooter terminado");
+    this.conveyorSubsystem.stopMotors();
+    System.out.println("Sistema de conveyor terminado");
   }
 
   // Returns true when the command should end.

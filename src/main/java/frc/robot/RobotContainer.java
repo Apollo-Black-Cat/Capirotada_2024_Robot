@@ -7,8 +7,10 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ActivateShooter;
 import frc.robot.commands.ClimberToogle;
+import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DesactiveShooter;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.OffSolenoid;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SlowShooter;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -22,7 +24,10 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -96,9 +101,10 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, true));
     m_driverController.a().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, false));
-    m_driverController.rightBumper().whileTrue(new ShooterCommand(m_conveyorSubsystem, m_shooterSubsystem, true));
-    m_driverController.leftBumper().whileTrue(new ShooterCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
+    m_driverController.rightBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, true), new ConveyorCommand(m_conveyorSubsystem, true)));
+    m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, false), new SequentialCommandGroup(new WaitCommand(0.80), new ConveyorCommand(m_conveyorSubsystem, false))));
     m_driverController.povUp().onTrue(new ClimberToogle(m_climberSubsystem));
+    m_driverController.povDown().onTrue(new OffSolenoid(m_climberSubsystem));
     m_driverController.rightTrigger().whileTrue(new SlowShooter(m_shooterSubsystem, m_conveyorSubsystem));
   }
 

@@ -92,7 +92,8 @@ public final class Constants {
 
   public static final class ClimberConstants {
     // Id del solenoide del trepador
-    public static final int KClimberSolenoid = 1;
+    public static final int KClimberSolenoid = 4;
+    public static final int KClimberSolenoidB = 5;
   }
 
   public static final class ShooterConstants {
@@ -106,7 +107,7 @@ public final class Constants {
 
   public static final class ConveyorConstants {
     // Id del motor del conveyor
-    public static final int KConveyorMotor = 5;
+    public static final int KConveyortMotor = 5;
 
     //Potencia del motor del conveyor (del -1 al 1)
     public static final double KConveyorMotorSpeed = 1.00;
@@ -141,7 +142,7 @@ public final class Constants {
     public static double kDXController = 0.00019;
 
     //este valor es para los giros
-    public static final double kPYawController = 0.6219;
+    public static final double kPYawController = 0.7019;
     public static final double KIYawController = 0.00018;
     public static double kDYawController = 0.000128;
 

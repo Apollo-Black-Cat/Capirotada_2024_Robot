@@ -13,9 +13,11 @@ import frc.robot.Constants.ClimberConstants;
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
   Solenoid climberSolenoid;
+  Solenoid climberSolenoidB;
 
   public ClimberSubsystem() {
     climberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.KClimberSolenoid);
+    climberSolenoidB = new Solenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.KClimberSolenoidB);
   }
 
   @Override
@@ -26,9 +28,11 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void toogleClimber() {
     climberSolenoid.set(!climberSolenoid.get());
+    climberSolenoidB.set(!climberSolenoidB.get());
   }
 
   public void setClimber(boolean active) {
     climberSolenoid.set(active);
+    climberSolenoidB.set(active);
   }
 }
