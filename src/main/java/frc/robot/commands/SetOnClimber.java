@@ -3,40 +3,36 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
+ 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ConveyorSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 
-public class SlowShooter extends Command {
-  /** Creates a new SlowShooter. */
-  private final ShooterSubsystem shooterSubsystem;
-  private final ConveyorSubsystem conveyorSubsystem;
-  public SlowShooter(ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem) {
+public class SetOnClimber extends Command {
+  /** Creates a new ClimberToogle. */
+  ClimberSubsystem climberSubsystem;
+
+  public SetOnClimber(ClimberSubsystem climberSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooterSubsystem = shooterSubsystem;
-    addRequirements(shooterSubsystem);
-    this.conveyorSubsystem = conveyorSubsystem;
-    addRequirements(conveyorSubsystem);
+    this.climberSubsystem = climberSubsystem;
+    addRequirements(climberSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Intake lento iniciado");
+    System.out.println("Sistema de trepadado de cadena iniciado!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    conveyorSubsystem.setPosition(true);
-    shooterSubsystem.SetMotorsSpeed(0.20, 0.20);
+    this.climberSubsystem.toogleClimber();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("Intake lento terminado");
+    System.out.println("Sistema de treapado de cadena finalizado!");
   }
 
   // Returns true when the command should end.

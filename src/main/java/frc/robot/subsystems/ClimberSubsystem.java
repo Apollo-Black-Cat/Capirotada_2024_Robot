@@ -12,27 +12,27 @@ import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
-  Solenoid climberSolenoid;
-  Solenoid climberSolenoidB;
+  Solenoid climberSolenoidLeft;
+  Solenoid climberSolenoidRight;
 
   public ClimberSubsystem() {
-    climberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.KClimberSolenoid);
-    climberSolenoidB = new Solenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.KClimberSolenoidB);
+    climberSolenoidLeft = new Solenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.KClimberSolenoidLeft);
+    climberSolenoidRight = new Solenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.KClimberSolenoidRight);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Escalador", climberSolenoid.get());
+    SmartDashboard.putBoolean("Escalador", climberSolenoidLeft.get());
   }
 
   public void toogleClimber() {
-    climberSolenoid.set(!climberSolenoid.get());
-    climberSolenoidB.set(!climberSolenoidB.get());
+    climberSolenoidLeft.set(!climberSolenoidLeft.get());
+    climberSolenoidRight.set(!climberSolenoidRight.get());
   }
 
   public void setClimber(boolean active) {
-    climberSolenoid.set(active);
-    climberSolenoidB.set(active);
+    climberSolenoidLeft.set(active);
+    climberSolenoidRight.set(active);
   }
 }

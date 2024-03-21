@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ConveyorConstants;
 
 public class ConveyorSubsystem extends SubsystemBase {
@@ -15,7 +14,7 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   /** Creates a new ConveyorSubsystem. */
   public ConveyorSubsystem() {
-    conveyorMotor =  new WPI_VictorSPX(Constants.ConveyorConstants.KConveyorMotor);
+    conveyorMotor =  new WPI_VictorSPX(ConveyorConstants.KConveyorMotor);
   }
 
   @Override

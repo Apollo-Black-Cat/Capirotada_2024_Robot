@@ -22,7 +22,7 @@ public class ShooterCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Shooter iniciado!");
+    System.out.println("Motores del shooter iniciados!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +35,7 @@ public class ShooterCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     this.shooterSubsystem.stopMotors();
-    System.out.println("Sistema de shooter terminado");
+    System.out.println("Motores del shooter apagados!");
   }
 
   // Returns true when the command should end.

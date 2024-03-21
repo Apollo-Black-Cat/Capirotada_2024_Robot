@@ -7,10 +7,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 
-public class OffSolenoid extends Command {
+public class SetOffClimber extends Command {
   ClimberSubsystem climberSubsystem;
   /** Creates a new OffSolenoid. */
-  public OffSolenoid(ClimberSubsystem climberSubsystem) {
+  public SetOffClimber(ClimberSubsystem climberSubsystem) {
     this.climberSubsystem = climberSubsystem;
     addRequirements(climberSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.

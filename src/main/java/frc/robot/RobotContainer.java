@@ -6,13 +6,13 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ActivateShooter;
-import frc.robot.commands.ClimberToogle;
+import frc.robot.commands.SetOnClimber;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DesactiveShooter;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.OffSolenoid;
+import frc.robot.commands.SetOffClimber;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.SlowShooter;
+import frc.robot.commands.ShooterActivateCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
@@ -101,11 +101,10 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, true));
     m_driverController.a().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, false));
-    m_driverController.rightBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, true), new ConveyorCommand(m_conveyorSubsystem, true)));
-    m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, false), new SequentialCommandGroup(new WaitCommand(0.80), new ConveyorCommand(m_conveyorSubsystem, false))));
-    m_driverController.povUp().onTrue(new ClimberToogle(m_climberSubsystem));
-    m_driverController.povDown().onTrue(new OffSolenoid(m_climberSubsystem));
-    m_driverController.rightTrigger().whileTrue(new SlowShooter(m_shooterSubsystem, m_conveyorSubsystem));
+    m_driverController.rightBumper().whileTrue(new ShooterActivateCommand(m_shooterSubsystem, m_conveyorSubsystem, true));
+    m_driverController.leftBumper().whileTrue(new ShooterActivateCommand(m_shooterSubsystem, m_conveyorSubsystem, false));
+    m_driverController.povUp().onTrue(new SetOnClimber(m_climberSubsystem));
+    m_driverController.povDown().onTrue(new SetOffClimber(m_climberSubsystem));
   }
 
   /**
