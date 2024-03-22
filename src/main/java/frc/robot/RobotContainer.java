@@ -8,10 +8,14 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ActivateShooter;
 import frc.robot.commands.SetOnClimber;
 import frc.robot.commands.ConveyorCommand;
+import frc.robot.commands.ConveyorSetOff;
+import frc.robot.commands.ConveyorSetOn;
 import frc.robot.commands.DesactiveShooter;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.SetOffClimber;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.ShooterSetOff;
+import frc.robot.commands.ShooterSetOn;
 import frc.robot.commands.ShooterActivateCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
@@ -20,9 +24,12 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -42,15 +49,18 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  DriveTrainSubsystem m_robotDrive;
-  IntakeSubsystem m_intakeSubsystem;
-  ConveyorSubsystem m_conveyorSubsystem;
-  ShooterSubsystem m_shooterSubsystem;
-  ClimberSubsystem m_climberSubsystem;
-  PneumaticsSubsystem m_pneumaticsSubsystem;
+  private final DriveTrainSubsystem m_robotDrive;
+  private final IntakeSubsystem m_intakeSubsystem;
+  private final ConveyorSubsystem m_conveyorSubsystem;
+  private final ShooterSubsystem m_shooterSubsystem;
+  private final ClimberSubsystem m_climberSubsystem;
+  private final PneumaticsSubsystem m_pneumaticsSubsystem;
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  // Mando del driver
   private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+
+  // Objeto que guarda los autonomos disponibles
+  private final SendableChooser<Command> autoChooser;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -63,9 +73,18 @@ public class RobotContainer {
     m_pneumaticsSubsystem = new PneumaticsSubsystem();
     m_shooterSubsystem = new ShooterSubsystem();
 
+    // Creacion de las opciones de autonomos
+    autoChooser = AutoBuilder.buildAutoChooser();
+
     NamedCommands.registerCommand("useIntake", new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, true));
-    NamedCommands.registerCommand("ActivateShooter", new ActivateShooter(m_shooterSubsystem, m_conveyorSubsystem));
-    NamedCommands.registerCommand("DesactivateShooter", new DesactiveShooter(m_shooterSubsystem, m_conveyorSubsystem));
+    NamedCommands.registerCommand("Encender Shooter", new ShooterSetOn(m_shooterSubsystem));
+    NamedCommands.registerCommand("Apagar Shooter", new ShooterSetOff(m_shooterSubsystem));
+    NamedCommands.registerCommand("EncenderConveyor", new ConveyorSetOn(m_conveyorSubsystem));
+    NamedCommands.registerCommand("ApagarConveyor", new ConveyorSetOff(m_conveyorSubsystem));
+
+    //Crear la seleccion de autonomos
+    SmartDashboard.putData("Seleccionador de autonomos", autoChooser);
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -88,21 +107,18 @@ public class RobotContainer {
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_robotDrive.setDefaultCommand(new RunCommand(
-        () -> m_robotDrive.arcadeDrive(m_driverController.getRawAxis(3) - m_driverController.getRawAxis(2),
-            -m_driverController.getLeftX() * 0.7),
+        () -> m_robotDrive.arcadeDrive(m_driverController.getLeftY(),
+            -m_driverController.getRightX() * 0.8),
         m_robotDrive));
 
-    // m_pneumaticsSubsystem
-    // .setDefaultCommand(new RunCommand(() ->
+    // m_pneumaticsSubsystem.setDefaultCommand(new RunCommand(() ->
     // m_pneumaticsSubsystem.setCompressor(true), m_pneumaticsSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
-    // pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, true));
-    m_driverController.a().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, false));
-    m_driverController.rightBumper().whileTrue(new ShooterActivateCommand(m_shooterSubsystem, m_conveyorSubsystem, true));
-    m_driverController.leftBumper().whileTrue(new ShooterActivateCommand(m_shooterSubsystem, m_conveyorSubsystem, false));
+    m_driverController.b().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, false));
+    m_driverController.a().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, true));
+    m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, false),
+        new ConveyorCommand(m_conveyorSubsystem, false)));
+    m_driverController.rightBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, true),
+        new SequentialCommandGroup(new WaitCommand(0.75), new ConveyorCommand(m_conveyorSubsystem, true))));
     m_driverController.povUp().onTrue(new SetOnClimber(m_climberSubsystem));
     m_driverController.povDown().onTrue(new SetOffClimber(m_climberSubsystem));
   }
@@ -113,7 +129,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return new PathPlannerAuto("izquierda");
+    //Ejecutar el autonomo seleccionado
+    return autoChooser.getSelected();
   }
 }

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.54,
-        "y": 7.62
+        "x": 1.2505003900884375,
+        "y": 5.507130871149041
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.529528354226657,
-        "y": 7.137241609009157
+        "x": 1.9554131415955147,
+        "y": 5.521816553472107
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.904108219665456,
-        "y": 7.063813197393838
+        "x": 2.8659254456254897,
+        "y": 5.507130871149041
       },
       "prevControl": {
-        "x": 2.4635377499735327,
-        "y": 7.066750333858451
+        "x": 1.8659254456254897,
+        "y": 5.507130871149041
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,10 +32,10 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Usar intake",
-      "waypointRelativePos": 0.6,
+      "name": "Recojer nota",
+      "waypointRelativePos": 0.75,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
@@ -50,7 +50,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 0.7,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
@@ -61,9 +61,9 @@
     "rotateFast": false
   },
   "reversed": true,
-  "folder": null,
+  "folder": "centro",
   "previewStartingState": {
-    "rotation": 89.3707616003962,
+    "rotation": 179.17703169755828,
     "velocity": 0
   },
   "useDefaultConstraints": true

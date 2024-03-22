@@ -23,9 +23,29 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/SmartDashboard/Field": "Field2d"
+      "/Shuffleboard/Teleoperated/DifferentialDrive[1]": "DifferentialDrive",
+      "/Shuffleboard/Teleoperated/navX-Sensor[2]": "Gyro",
+      "/SmartDashboard/Cancha": "Field2d",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Seleccionador de autonomos": "String Chooser"
     },
     "windows": {
+      "/Shuffleboard/Teleoperated/DifferentialDrive[1]": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Cancha": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "bottom": 1476,
         "height": 8.210550308227539,
@@ -54,5 +74,8 @@
       "open": true
     },
     "visible": true
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }

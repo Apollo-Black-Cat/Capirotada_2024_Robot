@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -26,7 +27,7 @@ public class IntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Intake iniciado");
+    SmartDashboard.putBoolean("Intake Active", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,7 +42,7 @@ public class IntakeCommand extends Command {
   public void end(boolean interrupted) {
     this.conveyorSubsystem.stopMotors();
     this.intakeSubsystem.stopIntake();
-    System.out.println("Intake detenido!");
+    SmartDashboard.putBoolean("Inatke Active", false);
   }
 
   // Returns true when the command should end.

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7071301441350655,
-      "y": 6.579185680732721
+      "x": 0.7511871911042578,
+      "y": 4.479133108534554
     },
-    "rotation": -118.30075576600643
+    "rotation": 119.248826336547
   },
   "command": {
     "type": "sequential",
@@ -26,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Encender Shooter"
+            "name": "EncenderConveyor"
           }
         },
         {
@@ -38,25 +38,25 @@
         {
           "type": "named",
           "data": {
-            "name": "Apagar Shooter"
+            "name": "ApagarConveyor"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ApagarConveyor"
+            "name": "Apagar Shooter"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Inicio Iz."
+            "pathName": "Inicio derecha"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Fin Iz."
+            "pathName": "Fin derecha"
           }
         },
         {

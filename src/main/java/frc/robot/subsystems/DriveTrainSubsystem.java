@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -56,6 +57,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
       DriveConstants.kRightEncoderPorts[1], DriveConstants.kRightEncoderReversed);
 
   // giroscopio
+  // private final AHRS m_gyro = new AHRS(Port.kUSB);
   private final AHRS m_gyro = new AHRS(Port.kUSB);
 
   // Clases de odometria para saber la posición del robot
@@ -98,13 +100,18 @@ public class DriveTrainSubsystem extends SubsystemBase {
      * Esto depende de como este puesta la transmicion del robot
      * "En algunos casos el motor que se debe de invertir es el de la izquierda"
      */
-    m_rightFollower.setInverted(true);
     m_rightLeader.setInverted(true);
+    m_rightFollower.setInverted(true);
 
     // Indicar la distancia por pulso de los encoders
     m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
 
+    m_drivetrainSim = new DifferentialDrivetrainSim(DriveConstants.kDrivetrainPlant,
+        DriveConstants.kDriveGearbox,
+        DriveConstants.kDriveGearing, DriveConstants.kTrackwidthMeters,
+        DriveConstants.kWheelDiameterMeters / 2,
+        VecBuilder.fill(0, 0, 0.0001, 0.1, 0.1, 0.005, 0.005));
     resetEncoders();
 
     m_Odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getDistance(),
@@ -120,14 +127,16 @@ public class DriveTrainSubsystem extends SubsystemBase {
       m_leftEncoderSim = new EncoderSim(m_leftEncoder);
       m_rightEncoderSim = new EncoderSim(m_rightEncoder);
       // Clase field2d para la poder ver la simulacion de la
-      m_fieldSim = new Field2d();
-      SmartDashboard.putData("Field", m_fieldSim);
     } else {
       m_leftEncoderSim = null;
       m_rightEncoderSim = null;
-      m_fieldSim = null;
     }
+    m_fieldSim = new Field2d();
 
+    // Informacion que se muestra en la pantalla de la driver station
+    Shuffleboard.getTab("Teleoperated").add(m_gyro);
+    Shuffleboard.getTab("Teleoperated").add(m_drive);
+    SmartDashboard.putData("Cancha", m_fieldSim);
     AutoBuilder.configureRamsete(
         this::getPose, // consiguir la posicion actual del robot
         this::resetOdometry, // reiniciar la odometria existente
@@ -149,6 +158,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
           return false;
         }, this // Hace referencia al subsystema y los sus requerimientos
     );
+    m_drive.setSafetyEnabled(false);
   }
 
   @Override
@@ -244,7 +254,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public void arcadeDrive(double fwd, double rot) {
     outputY = fwd * 0.9;
     outputX = rot * 0.55;
-    m_drive.arcadeDrive(outputY, outputX);
+    m_drive.arcadeDrive(-outputY, outputX);
   }
 
   /**

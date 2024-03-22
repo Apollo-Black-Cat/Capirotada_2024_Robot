@@ -17,6 +17,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     leftMotor = new WPI_VictorSPX(ShooterConstants.KShooterLeftMotor);
     rightMotor = new WPI_VictorSPX(ShooterConstants.KShooterRightMotor);
+    rightMotor.setInverted(true);
   }
 
   @Override

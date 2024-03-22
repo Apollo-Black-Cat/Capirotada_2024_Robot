@@ -4,42 +4,38 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class ConveyorCommand extends Command {
-  private final ConveyorSubsystem conveyorSubsystem;
-  private boolean isShooting;
-  /** Creates a new ConveyorCommand. */
-  public ConveyorCommand(ConveyorSubsystem conveyorSubsystem, boolean isShooting) {
-    this.conveyorSubsystem = conveyorSubsystem;
-    addRequirements(conveyorSubsystem);
-    this.isShooting = isShooting;
+public class ShooterSetOff extends Command {
+  /** Creates a new ShooterSet. */
+  ShooterSubsystem shooterSubsystem;
+  public ShooterSetOff( ShooterSubsystem shooterSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.shooterSubsystem = shooterSubsystem;
+    addRequirements(shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Conveyor iniciado");
+    SmartDashboard.putBoolean("Shooter Active",false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    conveyorSubsystem.setPosition(isShooting);
+    shooterSubsystem.stopMotors();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    conveyorSubsystem.stopMotors();
-    System.out.println("Conveyor finalizado");
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
