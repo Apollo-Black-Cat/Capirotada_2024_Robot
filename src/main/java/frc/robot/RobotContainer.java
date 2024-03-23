@@ -5,13 +5,11 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.ActivateShooter;
 import frc.robot.commands.SetOnClimber;
 import frc.robot.commands.SetPneumatics;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.ConveyorSetOff;
 import frc.robot.commands.ConveyorSetOn;
-import frc.robot.commands.DesactiveShooter;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.SetOffClimber;
 import frc.robot.commands.ShooterCommand;
@@ -27,7 +25,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -61,7 +58,7 @@ public class RobotContainer {
   private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   // Objeto que guarda los autonomos disponibles
-  private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<String> autoChooser;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -75,7 +72,14 @@ public class RobotContainer {
     m_shooterSubsystem = new ShooterSubsystem();
 
     // Creacion de las opciones de autonomos
-    autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = new SendableChooser<>();
+    autoChooser.setDefaultOption("Default Option", "Default Option");
+    autoChooser.addOption("Izquierda Simple", "Iz. Simple");
+    autoChooser.addOption("Centro Simple", "C. Simple");
+    autoChooser.addOption("Derecha Simple", "D. Simple");
+    autoChooser.addOption("Izquierda", "Izquierda");
+    autoChooser.addOption("Centro", "Centro");
+    autoChooser.addOption("Derecha", "Derecha");
 
     NamedCommands.registerCommand("useIntake", new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, true));
     NamedCommands.registerCommand("Encender Shooter", new ShooterSetOn(m_shooterSubsystem));
@@ -84,7 +88,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("ApagarConveyor", new ConveyorSetOff(m_conveyorSubsystem));
     NamedCommands.registerCommand("Encender Compressor", new SetPneumatics(m_pneumaticsSubsystem, true));
     NamedCommands.registerCommand("Apagar Compressor", new SetPneumatics(m_pneumaticsSubsystem, false));
-    //Crear la seleccion de autonomos
+
+    // Crear la seleccion de autonomos
     SmartDashboard.putData("Seleccionador de autonomos", autoChooser);
 
     // Configure the trigger bindings
@@ -130,7 +135,35 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //Ejecutar el autonomo seleccionado
-    return AutoBuilder.buildAuto("Centro");
+    // Ejecutar el autonomo seleccionado
+    Command selectedCommand;
+    switch (autoChooser.getSelected()) {
+      case "Default Option":
+        selectedCommand = new Command() {
+        };
+      case "Iz. Simple":
+        selectedCommand = AutoBuilder.buildAuto("Izquierda Simple");
+        break;
+      case "D. Simple":
+        selectedCommand = AutoBuilder.buildAuto("Derecha Simple");
+        break;
+      case "C. Simple":
+        selectedCommand = AutoBuilder.buildAuto("Centro Simple");
+        break;
+      case "Izquierda":
+        selectedCommand = AutoBuilder.buildAuto("Izquierda");
+        break;
+      case "Derecha":
+        selectedCommand = AutoBuilder.buildAuto("Derecha");
+        break;
+      case "Centro":
+        selectedCommand = AutoBuilder.buildAuto("Centro");
+        break;
+      default:
+        selectedCommand = new Command() {
+        };
+        break;
+    }
+    return selectedCommand;
   }
 }
