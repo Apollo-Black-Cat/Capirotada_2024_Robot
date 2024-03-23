@@ -14,6 +14,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Apagar Compressor"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Encender Shooter"
           }
         },
@@ -93,6 +99,12 @@
           "type": "named",
           "data": {
             "name": "ApagarConveyor"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Encender Compressor"
           }
         }
       ]

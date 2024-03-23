@@ -37,9 +37,10 @@ public class ShooterActivateCommand extends Command {
   @Override
   public void execute() {
     if (isShooting)
-    //Este comando paralelo hace que el shooter active, y el conveyor espere 1 segundo antes de activarse.
-      new ParallelCommandGroup(new ShooterCommand(shooterSubsystem, true),
-          new SequentialCommandGroup(new WaitCommand(0.8), new ConveyorCommand(conveyorSubsystem, true)));
+    {
+      shooterSubsystem.SetMotorsSpeed(0.50, 0.50);
+      conveyorSubsystem.setPosition(isShooting);
+    }
     else {
       shooterSubsystem.ActivateShooter(isShooting);
       conveyorSubsystem.setPosition(isShooting);

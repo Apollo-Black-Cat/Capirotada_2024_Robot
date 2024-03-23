@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ActivateShooter;
 import frc.robot.commands.SetOnClimber;
+import frc.robot.commands.SetPneumatics;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.ConveyorSetOff;
 import frc.robot.commands.ConveyorSetOn;
@@ -81,7 +82,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Apagar Shooter", new ShooterSetOff(m_shooterSubsystem));
     NamedCommands.registerCommand("EncenderConveyor", new ConveyorSetOn(m_conveyorSubsystem));
     NamedCommands.registerCommand("ApagarConveyor", new ConveyorSetOff(m_conveyorSubsystem));
-
+    NamedCommands.registerCommand("Encender Compressor", new SetPneumatics(m_pneumaticsSubsystem, true));
+    NamedCommands.registerCommand("Apagar Compressor", new SetPneumatics(m_pneumaticsSubsystem, false));
     //Crear la seleccion de autonomos
     SmartDashboard.putData("Seleccionador de autonomos", autoChooser);
 
@@ -108,19 +110,18 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_robotDrive.setDefaultCommand(new RunCommand(
         () -> m_robotDrive.arcadeDrive(m_driverController.getLeftY(),
-            -m_driverController.getRightX() * 0.8),
+            -m_driverController.getRightX() * 0.95),
         m_robotDrive));
 
-    // m_pneumaticsSubsystem.setDefaultCommand(new RunCommand(() ->
-    // m_pneumaticsSubsystem.setCompressor(true), m_pneumaticsSubsystem));
     m_driverController.b().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, false));
     m_driverController.a().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, true));
-    m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, false),
+    m_driverController.rightBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, false),
         new ConveyorCommand(m_conveyorSubsystem, false)));
-    m_driverController.rightBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, true),
+    m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, true),
         new SequentialCommandGroup(new WaitCommand(0.75), new ConveyorCommand(m_conveyorSubsystem, true))));
     m_driverController.povUp().onTrue(new SetOnClimber(m_climberSubsystem));
     m_driverController.povDown().onTrue(new SetOffClimber(m_climberSubsystem));
+    m_driverController.povLeft().whileTrue(new ShooterActivateCommand(m_shooterSubsystem, m_conveyorSubsystem, true));
   }
 
   /**
@@ -130,6 +131,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     //Ejecutar el autonomo seleccionado
-    return autoChooser.getSelected();
+    return AutoBuilder.buildAuto("Centro");
   }
 }

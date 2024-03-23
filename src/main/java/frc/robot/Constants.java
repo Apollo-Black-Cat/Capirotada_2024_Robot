@@ -137,14 +137,14 @@ public final class Constants {
     public static final double kRamseteB = 1.5;
     public static final double kRamseteZeta = 1.6;
     //este valor es para le velocidad lineal del autonomo
-    public static final double kPXController = 1.0576;
+    public static final double kPXController = 0.98;
     public static double kIXController = 0.00019;
     public static double kDXController = 0.00019;
 
     //este valor es para los giros
-    public static final double kPYawController = 0.6319;
+    public static final double kPYawController = 0.086;
     public static final double KIYawController = 0.00018;
-    public static double kDYawController = 0.0006018;
+    public static double kDYawController = 0.0006418;
 
     public static final double kPTurnController = 0.12;
     public static final double KITurnController = 0.000009;
