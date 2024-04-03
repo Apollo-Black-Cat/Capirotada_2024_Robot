@@ -142,9 +142,9 @@ public final class Constants {
     public static double kDXController = 0.00013;
 
     //este valor es para los giros
-    public static final double kPYawController = 0.366;
-    public static final double KIYawController = 0.00003;
-    public static double kDYawController = 0.000018;
+    public static final double kPYawController = 0.098;
+    public static final double KIYawController = 0.00000;
+    public static double kDYawController = 0.00000;
 
     public static final double kPTurnController = 0.12;
     public static final double KITurnController = 0.000009;

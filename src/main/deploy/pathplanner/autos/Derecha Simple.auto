@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.501530591612168,
-      "y": 2.995879193905079
+      "x": 0.7218158264581296,
+      "y": 4.4057046969192335
     },
-    "rotation": 180.0
+    "rotation": 131.42366562500268
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Derecha Simple"
+            "pathName": "Derecha Simple Inicio"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Derecha Simple Final"
           }
         },
         {
