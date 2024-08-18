@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.Constants.ArduinoConstant;
 
 public class ShooterCommand extends Command {
   private final ShooterSubsystem shooterSubsystem;
@@ -23,6 +24,7 @@ public class ShooterCommand extends Command {
   @Override
   public void initialize() {
     System.out.println("Motores del shooter iniciados!");
+    ArduinoConstant.arduinoPort.writeString("shooter\n");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,6 +38,7 @@ public class ShooterCommand extends Command {
   public void end(boolean interrupted) {
     this.shooterSubsystem.stopMotors();
     System.out.println("Motores del shooter apagados!");
+    ArduinoConstant.arduinoPort.writeString("chill\n");
   }
 
   // Returns true when the command should end.

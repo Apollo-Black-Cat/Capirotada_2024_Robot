@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.Constants.ArduinoConstant;
 
 public class IntakeCommand extends Command {
   /** Creates a new IntakeCommand. */
@@ -22,6 +23,12 @@ public class IntakeCommand extends Command {
     this.isOpen = isOpen;
     addRequirements(intakeSubsystem);
     addRequirements(conveyorSubsystem);
+    if (isOpen == true){  
+      ArduinoConstant.arduinoPort.writeString("intakeIn\n");
+    }
+    else{ 
+      ArduinoConstant.arduinoPort.writeString("intakeOut\n");
+    }
   }
 
   // Called when the command is initially scheduled.
@@ -43,6 +50,7 @@ public class IntakeCommand extends Command {
     this.conveyorSubsystem.stopMotors();
     this.intakeSubsystem.stopIntake();
     SmartDashboard.putBoolean("Inatke Active", false);
+    ArduinoConstant.arduinoPort.writeString("chill\n");
   }
 
   // Returns true when the command should end.

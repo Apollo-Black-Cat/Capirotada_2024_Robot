@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.Constants.ArduinoConstant;
 
 public class ShooterSetOff extends Command {
   /** Creates a new ShooterSet. */
@@ -21,6 +22,7 @@ public class ShooterSetOff extends Command {
   @Override
   public void initialize() {
     SmartDashboard.putBoolean("Shooter Active",false);
+    ArduinoConstant.arduinoPort.writeString("chill\n");
   }
 
   // Called every time the scheduler runs while the command is scheduled.

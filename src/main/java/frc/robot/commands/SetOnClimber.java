@@ -6,6 +6,7 @@ package frc.robot.commands;
  
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.Constants.ArduinoConstant;
 
 public class SetOnClimber extends Command {
   /** Creates a new ClimberToogle. */
@@ -21,6 +22,7 @@ public class SetOnClimber extends Command {
   @Override
   public void initialize() {
     System.out.println("Sistema de trepadado de cadena iniciado!");
+    ArduinoConstant.arduinoPort.writeString("climberOn\n");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,6 +35,7 @@ public class SetOnClimber extends Command {
   @Override
   public void end(boolean interrupted) {
     System.out.println("Sistema de treapado de cadena finalizado!");
+    ArduinoConstant.arduinoPort.writeString("chill\n");
   }
 
   // Returns true when the command should end.

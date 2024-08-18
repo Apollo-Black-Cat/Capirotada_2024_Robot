@@ -12,6 +12,7 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -123,6 +124,9 @@ public final class Constants {
     public static final double KSmallMotorSpeed = 1.00;
   }
 
+  public static final class ArduinoConstant {
+    public static final SerialPort arduinoPort = new SerialPort(9600, SerialPort.Port.kUSB);
+  }
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
