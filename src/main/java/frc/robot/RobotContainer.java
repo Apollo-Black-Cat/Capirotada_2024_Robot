@@ -20,6 +20,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -53,6 +54,7 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem;
   private final ClimberSubsystem m_climberSubsystem;
   private final PneumaticsSubsystem m_pneumaticsSubsystem;
+  private final LEDSubsystem m_ledSubsystem;
 
   // Mando del driver
   private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -70,6 +72,7 @@ public class RobotContainer {
     m_climberSubsystem = new ClimberSubsystem();
     m_pneumaticsSubsystem = new PneumaticsSubsystem();
     m_shooterSubsystem = new ShooterSubsystem();
+    m_ledSubsystem = new LEDSubsystem();
 
     // Creacion de las opciones de autonomos
     autoChooser = new SendableChooser<>();
@@ -81,7 +84,7 @@ public class RobotContainer {
     autoChooser.addOption("Centro", "Centro");
     autoChooser.addOption("Derecha", "Derecha");
 
-    NamedCommands.registerCommand("useIntake", new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, true));
+    NamedCommands.registerCommand("useIntake", new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, m_ledSubsystem, true, 3));
     NamedCommands.registerCommand("Encender Shooter", new ShooterSetOn(m_shooterSubsystem));
     NamedCommands.registerCommand("Apagar Shooter", new ShooterSetOff(m_shooterSubsystem));
     NamedCommands.registerCommand("EncenderConveyor", new ConveyorSetOn(m_conveyorSubsystem));
@@ -115,16 +118,16 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_robotDrive.setDefaultCommand(new RunCommand(
         () -> m_robotDrive.arcadeDrive(m_driverController.getLeftY(),
-            -m_driverController.getRightX() * 0.95),
+            -m_driverController.getRightX() * 1.5),
         m_robotDrive));
 
-    m_driverController.b().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, false));
-    m_driverController.a().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, true));
-    m_driverController.rightBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, false),
+    m_driverController.b().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, m_ledSubsystem, false, 4));
+    m_driverController.a().whileTrue(new IntakeCommand(m_intakeSubsystem, m_conveyorSubsystem, m_ledSubsystem, true, 3));
+    m_driverController.rightBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, m_ledSubsystem, false),
         new ConveyorCommand(m_conveyorSubsystem, false)));
-    m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, true),
+    m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(new ShooterCommand(m_shooterSubsystem, m_ledSubsystem, true),
         new SequentialCommandGroup(new WaitCommand(0.75), new ConveyorCommand(m_conveyorSubsystem, true))));
-    m_driverController.povUp().onTrue(new SetOnClimber(m_climberSubsystem));
+    m_driverController.povUp().onTrue(new SetOnClimber(m_climberSubsystem, m_ledSubsystem));
     m_driverController.povDown().onTrue(new SetOffClimber(m_climberSubsystem));
     m_driverController.povLeft().whileTrue(new ShooterActivateCommand(m_shooterSubsystem, m_conveyorSubsystem, true));
   }

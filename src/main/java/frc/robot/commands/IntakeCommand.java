@@ -8,27 +8,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.Constants.ArduinoConstant;
+import frc.robot.subsystems.LEDSubsystem;
 
 public class IntakeCommand extends Command {
   /** Creates a new IntakeCommand. */
+  LEDSubsystem ledSubsystem;
   IntakeSubsystem intakeSubsystem;
   ConveyorSubsystem conveyorSubsystem;
+  int ledMode;
   boolean isOpen;
 
-  public IntakeCommand(IntakeSubsystem intakeSubsystem, ConveyorSubsystem conveyorSubsystem, boolean isOpen) {
+  public IntakeCommand(IntakeSubsystem intakeSubsystem, ConveyorSubsystem conveyorSubsystem, LEDSubsystem ledSubsystem, boolean isOpen, int ledMode) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
     this.conveyorSubsystem = conveyorSubsystem;
+    this.ledSubsystem = ledSubsystem;
     this.isOpen = isOpen;
+    this.ledMode = ledMode;
     addRequirements(intakeSubsystem);
     addRequirements(conveyorSubsystem);
-    if (isOpen == true){  
-      ArduinoConstant.arduinoPort.writeString("intakeIn\n");
-    }
-    else{ 
-      ArduinoConstant.arduinoPort.writeString("intakeOut\n");
-    }
+    addRequirements(ledSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -42,6 +41,7 @@ public class IntakeCommand extends Command {
   public void execute() {
     this.intakeSubsystem.setPosition(isOpen);
     this.conveyorSubsystem.setPosition(isOpen);
+    this.ledSubsystem.ledInit(ledMode);
   }
 
   // Called once the command ends or is interrupted.
@@ -49,8 +49,8 @@ public class IntakeCommand extends Command {
   public void end(boolean interrupted) {
     this.conveyorSubsystem.stopMotors();
     this.intakeSubsystem.stopIntake();
+    this.ledSubsystem.ledInit(1);
     SmartDashboard.putBoolean("Inatke Active", false);
-    ArduinoConstant.arduinoPort.writeString("chill\n");
   }
 
   // Returns true when the command should end.

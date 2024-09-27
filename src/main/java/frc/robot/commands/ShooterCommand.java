@@ -5,16 +5,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.Constants.ArduinoConstant;
 
 public class ShooterCommand extends Command {
   private final ShooterSubsystem shooterSubsystem;
+  private final LEDSubsystem ledSubsystem;
   private boolean isShooting;
 
   /** Creates a new ShooterCommand. */
-  public ShooterCommand(ShooterSubsystem shooterSubsystem, boolean isShooting) {
+  public ShooterCommand(ShooterSubsystem shooterSubsystem, LEDSubsystem ledSubsystem, boolean isShooting) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.ledSubsystem = ledSubsystem;
+    addRequirements(ledSubsystem);
     this.shooterSubsystem = shooterSubsystem;
     addRequirements(shooterSubsystem);
     this.isShooting = isShooting;
@@ -24,21 +27,26 @@ public class ShooterCommand extends Command {
   @Override
   public void initialize() {
     System.out.println("Motores del shooter iniciados!");
-    ArduinoConstant.arduinoPort.writeString("shooter\n");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     this.shooterSubsystem.ActivateShooter(isShooting);
+    if (isShooting) {
+      this.ledSubsystem.ledInit(2);
+    }
+    else {
+      this.ledSubsystem.ledInit(6);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     this.shooterSubsystem.stopMotors();
+    this.ledSubsystem.ledInit(1);
     System.out.println("Motores del shooter apagados!");
-    ArduinoConstant.arduinoPort.writeString("chill\n");
   }
 
   // Returns true when the command should end.

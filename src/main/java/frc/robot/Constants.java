@@ -12,7 +12,6 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -31,8 +30,8 @@ public final class Constants {
     // drive motors
     public static final int kLeftMotor1Port = 0;
     public static final int kLeftMotor2Port = 1;
-    public static final int kRightMotor1Port = 2;
-    public static final int kRightMotor2Port = 3;
+    public static final int kRightMotor1Port = 12;
+    public static final int kRightMotor2Port = 11;
 
     // Trepate Mija solenoid
     // public static final int KTrepateSoleoind = 2;
@@ -93,14 +92,14 @@ public final class Constants {
 
   public static final class ClimberConstants {
     // Id del solenoide del trepador
-    public static final int KClimberSolenoidLeft = 4;
-    public static final int KClimberSolenoidRight = 5;
+    public static final int KClimberSolenoidLeft = 7;
+    public static final int KClimberSolenoidRight = 9;
   }
 
   public static final class ShooterConstants {
     // Ids de los motores del shooter
-    public static final int KShooterLeftMotor = 4;
-    public static final int KShooterRightMotor = 6;
+    public static final int KShooterLeftMotor = 7;
+    public static final int KShooterRightMotor = 8;
 
     //Velocidad de los motores de los shooter (del -1 al 1)
     public static final double KShooterMotorSpeed = 1.00;
@@ -108,10 +107,10 @@ public final class Constants {
 
   public static final class ConveyorConstants {
     // Id del motor del conveyor
-    public static final int KConveyorMotor = 5;
+    public static final int KConveyorMotor = 10;
 
     //Potencia del motor del conveyor (del -1 al 1)
-    public static final double KConveyorMotorSpeed = 1.00;
+    public static final double KConveyorMotorSpeed = 0.35;
   }
 
   public static final class IntakeConstants {
@@ -122,10 +121,6 @@ public final class Constants {
     //Potencia de los motores del Intake
     public static final double KBigMotorSpeed = 1.00;
     public static final double KSmallMotorSpeed = 1.00;
-  }
-
-  public static final class ArduinoConstant {
-    public static final SerialPort arduinoPort = new SerialPort(9600, SerialPort.Port.kUSB);
   }
 
   public static final class OIConstants {

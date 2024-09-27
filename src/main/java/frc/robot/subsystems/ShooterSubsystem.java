@@ -3,20 +3,20 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private final WPI_VictorSPX leftMotor;
-  private final WPI_VictorSPX rightMotor;
+  private final CANSparkMax leftMotor;
+  private final CANSparkMax rightMotor;
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    leftMotor = new WPI_VictorSPX(ShooterConstants.KShooterLeftMotor);
-    rightMotor = new WPI_VictorSPX(ShooterConstants.KShooterRightMotor);
+    leftMotor = new CANSparkMax(ShooterConstants.KShooterLeftMotor, MotorType.kBrushless);
+    rightMotor = new CANSparkMax(ShooterConstants.KShooterRightMotor, MotorType.kBrushless);
     rightMotor.setInverted(true);
   }
 
